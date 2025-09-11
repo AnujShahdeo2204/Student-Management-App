@@ -176,6 +176,10 @@ If you encounter any issues:
 3. Ensure all environment variables are set correctly
 4. Check that the database migrations have been run
 
+
+little issue with dark mode and data export 
+will be fixed in further update 
+
 ---
 
 **Happy Learning! 🎓**
