@@ -33,7 +33,7 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete }: TodoItemProps) {
 
   return (
     <div className={cn(
-      'bg-white rounded-lg border shadow-sm p-4 transition-all hover:shadow-md',
+      'bg-white dark:bg-gray-800 dark:border-gray-700 rounded-lg border shadow-sm p-4 transition-all hover:shadow-md',
       todo.completed && 'opacity-75'
     )}>
       <div className="flex items-start space-x-4">
@@ -60,7 +60,7 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete }: TodoItemProps) {
             <div className="flex-1">
               <h3 className={cn(
                 'text-lg font-medium',
-                todo.completed ? 'line-through text-gray-500' : 'text-gray-900'
+                todo.completed ? 'line-through text-gray-500' : 'text-gray-900 dark:text-white'
               )}>
                 {todo.title}
               </h3>
@@ -68,7 +68,7 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete }: TodoItemProps) {
               {todo.description && (
                 <p className={cn(
                   'mt-1 text-sm',
-                  todo.completed ? 'line-through text-gray-400' : 'text-gray-600'
+                  todo.completed ? 'line-through text-gray-400' : 'text-gray-600 dark:text-gray-300'
                 )}>
                   {todo.description}
                 </p>

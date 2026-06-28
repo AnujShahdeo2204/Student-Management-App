@@ -24,12 +24,12 @@ export function SessionHistory({ onClose }: SessionHistoryProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-lg font-semibold text-gray-900">Session History</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Session History</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-gray-400 hover:text-gray-600 dark:text-gray-300 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -41,7 +41,7 @@ export function SessionHistory({ onClose }: SessionHistoryProps) {
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Clock className="w-8 h-8 text-gray-400" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No sessions yet</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No sessions yet</h3>
               <p className="text-gray-500">Start your first focus session to see your history here</p>
             </div>
           ) : (
@@ -49,7 +49,7 @@ export function SessionHistory({ onClose }: SessionHistoryProps) {
               {sessions.map((session) => (
                 <div
                   key={session.id}
-                  className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg"
+                  className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg"
                 >
                   <div className="text-2xl">{SESSION_ICONS[session.type]}</div>
                   
@@ -58,7 +58,7 @@ export function SessionHistory({ onClose }: SessionHistoryProps) {
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${SESSION_COLORS[session.type]}`}>
                         {session.type.replace('_', ' ')}
                       </span>
-                      <span className="text-sm font-medium text-gray-900">
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">
                         {session.duration} minutes
                       </span>
                       {session.completed ? (
@@ -72,7 +72,7 @@ export function SessionHistory({ onClose }: SessionHistoryProps) {
                       )}
                     </div>
                     
-                    <div className="flex items-center text-sm text-gray-600 mt-1">
+                    <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 mt-1">
                       <Calendar className="w-4 h-4 mr-1" />
                       <span>{formatDate(new Date(session.start_time))}</span>
                       <Clock className="w-4 h-4 ml-4 mr-1" />

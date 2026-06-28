@@ -23,7 +23,7 @@ export function AttendanceTracker() {
     return (
       <div className="text-center py-12">
         <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No subjects to track</h3>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No subjects to track</h3>
         <p className="text-gray-500">Add subjects first to start marking attendance</p>
       </div>
     )
@@ -47,11 +47,11 @@ export function AttendanceTracker() {
       {/* Subjects List */}
       <div className="space-y-4">
         {subjects.map((subject) => (
-          <div key={subject.id} className="bg-gray-50 rounded-lg p-4">
+          <div key={subject.id} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="font-semibold text-gray-900">{subject.name}</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-semibold text-gray-900 dark:text-white">{subject.name}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   Current: {subject.attended_classes}/{subject.total_classes} classes
                 </p>
               </div>

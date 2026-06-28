@@ -18,9 +18,9 @@ export function Layout() {
   const { user, signOut } = useAuth()
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -41,7 +41,7 @@ export function Layout() {
               
               <button
                 onClick={signOut}
-                className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 transition-colors"
                 title="Sign out"
               >
                 <LogOut className="w-5 h-5" />
@@ -53,7 +53,7 @@ export function Layout() {
 
       <div className="flex">
         {/* Sidebar */}
-        <nav className="w-64 bg-white shadow-sm min-h-screen">
+        <nav className="w-64 bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm min-h-screen">
           <div className="p-4">
             <ul className="space-y-2">
               {navigation.map((item) => {
@@ -66,7 +66,7 @@ export function Layout() {
                         'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors',
                         isActive
                           ? 'bg-indigo-50 text-indigo-700 border-r-2 border-indigo-700'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:bg-gray-900 hover:text-gray-900 dark:text-white'
                       )}
                     >
                       <item.icon className="w-5 h-5 mr-3" />

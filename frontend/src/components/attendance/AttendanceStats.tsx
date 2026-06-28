@@ -24,7 +24,7 @@ export function AttendanceStats() {
     return (
       <div className="text-center py-12">
         <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No statistics available</h3>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No statistics available</h3>
         <p className="text-gray-500">Add subjects and mark attendance to see statistics</p>
       </div>
     )
@@ -80,9 +80,9 @@ export function AttendanceStats() {
       </div>
 
       {/* Subject Performance */}
-      <div className="bg-white border rounded-lg">
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 border rounded-lg">
         <div className="p-4 border-b">
-          <h3 className="text-lg font-semibold text-gray-900">Subject Performance</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Subject Performance</h3>
         </div>
         <div className="p-4">
           <div className="space-y-4">
@@ -91,7 +91,7 @@ export function AttendanceStats() {
               const isAboveTarget = percentage >= subject.required_percentage
               
               return (
-                <div key={subject.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={subject.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
                   <div className="flex items-center space-x-3">
                     {isAboveTarget ? (
                       <TrendingUp className="w-5 h-5 text-green-500" />
@@ -99,8 +99,8 @@ export function AttendanceStats() {
                       <TrendingDown className="w-5 h-5 text-red-500" />
                     )}
                     <div>
-                      <p className="font-medium text-gray-900">{subject.name}</p>
-                      <p className="text-sm text-gray-600">
+                      <p className="font-medium text-gray-900 dark:text-white">{subject.name}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
                         {subject.attended_classes}/{subject.total_classes} classes
                       </p>
                     </div>
@@ -126,9 +126,9 @@ export function AttendanceStats() {
 
       {/* Recent Activity */}
       {recentRecords.length > 0 && (
-        <div className="bg-white border rounded-lg">
+        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 border rounded-lg">
           <div className="p-4 border-b">
-            <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Activity</h3>
           </div>
           <div className="p-4">
             <div className="space-y-3">
@@ -149,7 +149,7 @@ export function AttendanceStats() {
                       )}>
                         {record.status}
                       </span>
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-gray-900 dark:text-white">
                         {subject?.name || 'Unknown Subject'}
                       </span>
                     </div>

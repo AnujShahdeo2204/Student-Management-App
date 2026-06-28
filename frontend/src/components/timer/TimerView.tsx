@@ -41,20 +41,20 @@ export function TimerView() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Focus Timer</h1>
-          <p className="text-gray-600">Stay focused with the Pomodoro technique</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Focus Timer</h1>
+          <p className="text-gray-600 dark:text-gray-300">Stay focused with the Pomodoro technique</p>
         </div>
         <div className="flex items-center space-x-2">
           <button
             onClick={() => setShowHistory(true)}
-            className="p-2 text-gray-600 hover:text-indigo-600 transition-colors"
+            className="p-2 text-gray-600 dark:text-gray-300 hover:text-indigo-600 transition-colors"
             title="Session History"
           >
             <History className="w-5 h-5" />
           </button>
           <button
             onClick={() => setShowSettings(true)}
-            className="p-2 text-gray-600 hover:text-indigo-600 transition-colors"
+            className="p-2 text-gray-600 dark:text-gray-300 hover:text-indigo-600 transition-colors"
             title="Timer Settings"
           >
             <Settings className="w-5 h-5" />
@@ -64,46 +64,46 @@ export function TimerView() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
+        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-6 rounded-lg shadow-sm border">
           <div className="flex items-center">
             <div className="p-2 bg-indigo-100 rounded-lg">
               <div className="w-6 h-6 bg-indigo-500 rounded"></div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Completed Sessions</p>
-              <p className="text-2xl font-bold text-gray-900">{completedSessions}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Completed Sessions</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{completedSessions}</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
+        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-6 rounded-lg shadow-sm border">
           <div className="flex items-center">
             <div className="p-2 bg-green-100 rounded-lg">
               <div className="w-6 h-6 bg-green-500 rounded"></div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Focus Time</p>
-              <p className="text-2xl font-bold text-gray-900">{completedSessions * settings.focus}m</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Focus Time</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{completedSessions * settings.focus}m</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
+        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-6 rounded-lg shadow-sm border">
           <div className="flex items-center">
             <div className="p-2 bg-purple-100 rounded-lg">
               <div className="w-6 h-6 bg-purple-500 rounded"></div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Current Streak</p>
-              <p className="text-2xl font-bold text-gray-900">{completedSessions}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Current Streak</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{completedSessions}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Session Type Selector */}
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Session Type</h2>
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 rounded-lg shadow-sm border p-6">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Session Type</h2>
         <div className="grid grid-cols-3 gap-4">
           {SESSION_TYPES.map((session) => (
             <button
@@ -119,8 +119,8 @@ export function TimerView() {
               )}
             >
               <div className="text-2xl mb-2">{session.icon}</div>
-              <div className="font-medium text-gray-900">{session.label}</div>
-              <div className="text-sm text-gray-600">
+              <div className="font-medium text-gray-900 dark:text-white">{session.label}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">
                 {settings[session.type]}m
               </div>
             </button>
@@ -129,7 +129,7 @@ export function TimerView() {
       </div>
 
       {/* Timer Display */}
-      <div className="bg-white rounded-lg shadow-sm border p-8">
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 rounded-lg shadow-sm border p-8">
         <div className="text-center">
           <div className="relative inline-flex items-center justify-center">
             {/* Progress Ring */}
@@ -160,10 +160,10 @@ export function TimerView() {
             
             {/* Timer Text */}
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="text-4xl font-mono font-bold text-gray-900 mb-2">
+              <div className="text-4xl font-mono font-bold text-gray-900 dark:text-white mb-2">
                 {formatTime(minutes, seconds)}
               </div>
-              <div className="text-lg font-medium text-gray-600">
+              <div className="text-lg font-medium text-gray-600 dark:text-gray-300">
                 {currentSessionConfig?.label}
               </div>
               {isRunning && (
@@ -179,7 +179,7 @@ export function TimerView() {
             <button
               onClick={resetSession}
               disabled={!isRunning && timeLeft === settings[sessionType] * 60}
-              className="p-3 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-3 text-gray-600 dark:text-gray-300 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               title="Reset"
             >
               <RotateCcw className="w-6 h-6" />
@@ -202,7 +202,7 @@ export function TimerView() {
             <button
               onClick={() => {/* Skip session */}}
               disabled={!isRunning}
-              className="p-3 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-3 text-gray-600 dark:text-gray-300 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               title="Skip"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -70,8 +70,8 @@ export function TodoList() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Tasks</h1>
-          <p className="text-gray-600">Stay organized and productive</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Tasks</h1>
+          <p className="text-gray-600 dark:text-gray-300">Stay organized and productive</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
@@ -84,45 +84,45 @@ export function TodoList() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
+        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-6 rounded-lg shadow-sm border">
           <div className="flex items-center">
             <div className="p-2 bg-orange-100 rounded-lg">
               <div className="w-6 h-6 bg-orange-500 rounded"></div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Pending</p>
-              <p className="text-2xl font-bold text-gray-900">{pendingCount}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Pending</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{pendingCount}</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
+        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-6 rounded-lg shadow-sm border">
           <div className="flex items-center">
             <div className="p-2 bg-green-100 rounded-lg">
               <div className="w-6 h-6 bg-green-500 rounded"></div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Completed</p>
-              <p className="text-2xl font-bold text-gray-900">{completedCount}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Completed</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{completedCount}</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
+        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-6 rounded-lg shadow-sm border">
           <div className="flex items-center">
             <div className="p-2 bg-blue-100 rounded-lg">
               <div className="w-6 h-6 bg-blue-500 rounded"></div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total</p>
-              <p className="text-2xl font-bold text-gray-900">{todos.length}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Total</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{todos.length}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border space-y-4">
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-4 rounded-lg shadow-sm border space-y-4">
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -149,7 +149,7 @@ export function TodoList() {
                 'px-3 py-1 rounded-full text-sm font-medium transition-colors',
                 filter === filterType
                   ? 'bg-indigo-100 text-indigo-700'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  : 'bg-gray-100 text-gray-600 dark:text-gray-300 hover:bg-gray-200'
               )}
             >
               {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
@@ -167,7 +167,7 @@ export function TodoList() {
                 'px-3 py-1 rounded-full text-sm font-medium transition-colors',
                 categoryFilter === category
                   ? 'bg-indigo-100 text-indigo-700'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  : 'bg-gray-100 text-gray-600 dark:text-gray-300 hover:bg-gray-200'
               )}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -183,7 +183,7 @@ export function TodoList() {
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Plus className="w-8 h-8 text-gray-400" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No tasks found</h3>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No tasks found</h3>
             <p className="text-gray-500 mb-4">
               {searchQuery || filter !== 'all' || categoryFilter !== 'all'
                 ? 'Try adjusting your filters'

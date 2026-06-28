@@ -58,8 +58,8 @@ export function TimetableView() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Timetable</h1>
-          <p className="text-gray-600">Organize your weekly schedule</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Timetable</h1>
+          <p className="text-gray-600 dark:text-gray-300">Organize your weekly schedule</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
@@ -71,7 +71,7 @@ export function TimetableView() {
       </div>
 
       {/* Day Selector */}
-      <div className="bg-white rounded-lg shadow-sm border p-4">
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 rounded-lg shadow-sm border p-4">
         <div className="flex space-x-2 overflow-x-auto">
           {DAYS.map((day, index) => (
             <button
@@ -91,12 +91,12 @@ export function TimetableView() {
       </div>
 
       {/* Events for Selected Day */}
-      <div className="bg-white rounded-lg shadow-sm border">
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 rounded-lg shadow-sm border">
         <div className="p-4 border-b">
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {DAYS[selectedDay]} Schedule
           </h2>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             {dayEvents.length} event{dayEvents.length !== 1 ? 's' : ''} scheduled
           </p>
         </div>
@@ -107,7 +107,7 @@ export function TimetableView() {
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Clock className="w-8 h-8 text-gray-400" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No events scheduled</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No events scheduled</h3>
               <p className="text-gray-500 mb-4">
                 Add your first event for {DAYS[selectedDay]}
               </p>
@@ -161,22 +161,22 @@ function EventCard({ event, onEdit, onDelete }: EventCardProps) {
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900">{event.title}</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-white">{event.title}</h3>
           
-          <div className="flex items-center text-sm text-gray-600 mt-1">
+          <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 mt-1">
             <Clock className="w-4 h-4 mr-1" />
             <span>{event.start_time} - {event.end_time}</span>
           </div>
           
           {event.location && (
-            <div className="flex items-center text-sm text-gray-600 mt-1">
+            <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 mt-1">
               <MapPin className="w-4 h-4 mr-1" />
               <span>{event.location}</span>
             </div>
           )}
           
           {event.description && (
-            <p className="text-sm text-gray-600 mt-2">{event.description}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">{event.description}</p>
           )}
         </div>
 

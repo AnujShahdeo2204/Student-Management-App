@@ -63,14 +63,14 @@ export function ChatbotView() {
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b bg-white">
+      <div className="flex items-center justify-between p-6 border-b bg-white dark:bg-gray-800 dark:border-gray-700">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center">
             <Bot className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">Study Assistant</h1>
-            <p className="text-sm text-gray-600">Ask me about your tasks, attendance, or study tips!</p>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">Study Assistant</h1>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Ask me about your tasks, attendance, or study tips!</p>
           </div>
         </div>
         
@@ -84,12 +84,12 @@ export function ChatbotView() {
       </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
+      <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50 dark:bg-gray-900">
         {chatMessages.length === 0 ? (
           <div className="text-center py-12">
             <Bot className="w-16 h-16 text-indigo-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Hi! I'm your Study Assistant 👋</h3>
-            <p className="text-gray-600 mb-6">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Hi! I'm your Study Assistant 👋</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
               I can help you with information about your tasks, attendance, focus sessions, and provide study tips!
             </p>
             
@@ -100,7 +100,7 @@ export function ChatbotView() {
                   <button
                     key={index}
                     onClick={() => setInputMessage(question)}
-                    className="text-left p-3 bg-white border border-gray-200 rounded-lg hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-sm"
+                    className="text-left p-3 bg-white dark:bg-gray-800 dark:border-gray-700 border border-gray-200 rounded-lg hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-sm"
                   >
                     <HelpCircle className="w-4 h-4 inline mr-2 text-indigo-500" />
                     {question}
@@ -130,7 +130,7 @@ export function ChatbotView() {
                     'max-w-xs lg:max-w-md px-4 py-2 rounded-lg',
                     message.isUser
                       ? 'bg-indigo-600 text-white'
-                      : 'bg-white text-gray-900 border border-gray-200'
+                      : 'bg-white dark:bg-gray-800 dark:border-gray-700 text-gray-900 dark:text-white border border-gray-200'
                   )}
                 >
                   <p className="text-sm">{message.text}</p>
@@ -155,7 +155,7 @@ export function ChatbotView() {
                 <div className="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center">
                   <Bot className="w-4 h-4 text-white" />
                 </div>
-                <div className="bg-white border border-gray-200 rounded-lg px-4 py-2">
+                <div className="bg-white dark:bg-gray-800 dark:border-gray-700 border border-gray-200 rounded-lg px-4 py-2">
                   <div className="flex space-x-1">
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -170,7 +170,7 @@ export function ChatbotView() {
       </div>
 
       {/* Input Form */}
-      <div className="p-4 bg-white border-t">
+      <div className="p-4 bg-white dark:bg-gray-800 dark:border-gray-700 border-t">
         <form onSubmit={handleSendMessage} className="flex space-x-3">
           <input
             type="text"

@@ -30,12 +30,12 @@ export function SubjectForm({ onClose }: SubjectFormProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 rounded-lg shadow-xl max-w-md w-full">
         <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-lg font-semibold text-gray-900">Add New Subject</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Add New Subject</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-gray-400 hover:text-gray-600 dark:text-gray-300 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>

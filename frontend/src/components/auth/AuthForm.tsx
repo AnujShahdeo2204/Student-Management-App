@@ -16,15 +16,16 @@ export function AuthForm() {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-full mb-4">
               <GraduationCap className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Student Manager</h1>
-            <p className="text-gray-600">Restored locally from your Supabase backup</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Student Manager</h1>
+            <p className="text-gray-600 dark:text-gray-300">Restored locally from your Supabase backup</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-8 space-y-4 text-center">
-            <p className="text-sm text-gray-600">
+          <div className="bg-white dark:bg-gray-800 dark:border-gray-700 rounded-2xl shadow-xl p-8 space-y-4 text-center">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
               The hosted Supabase project is inactive, so this workspace is running from your backup data.
             </p>
             <button
+              type="button"
               onClick={restoreDemoSession}
               className="w-full rounded-lg bg-indigo-600 px-4 py-3 text-sm font-medium text-white hover:bg-indigo-700 transition-colors"
             >
@@ -50,12 +51,12 @@ export function AuthForm() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-full mb-4">
             <GraduationCap className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Student Manager</h1>
-          <p className="text-gray-600">Organize • Focus • Achieve</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Student Manager</h1>
+          <p className="text-gray-600 dark:text-gray-300">Organize • Focus • Achieve</p>
         </div>
 
         {/* Auth Form */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 rounded-2xl shadow-xl p-8">
           <Auth
             supabaseClient={supabase}
             appearance={{
@@ -75,7 +76,7 @@ export function AuthForm() {
               },
             }}
             providers={['google']}
-            redirectTo={window.location.origin}
+            redirectTo={`${window.location.origin}${import.meta.env.BASE_URL}`}
             onlyThirdPartyProviders={false}
           />
         </div>

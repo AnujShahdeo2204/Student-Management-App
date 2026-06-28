@@ -25,8 +25,8 @@ export function AttendanceView() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Attendance Calculator</h1>
-          <p className="text-gray-600">Track your attendance and calculate required classes</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Attendance Calculator</h1>
+          <p className="text-gray-600 dark:text-gray-300">Track your attendance and calculate required classes</p>
         </div>
         <button
           onClick={() => setShowSubjectForm(true)}
@@ -38,7 +38,7 @@ export function AttendanceView() {
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-lg shadow-sm border">
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 rounded-lg shadow-sm border">
         <div className="border-b">
           <nav className="flex space-x-8 px-6">
             {[
@@ -69,7 +69,7 @@ export function AttendanceView() {
               {subjects.length === 0 ? (
                 <div className="text-center py-12">
                   <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No subjects added</h3>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No subjects added</h3>
                   <p className="text-gray-500 mb-4">Add your subjects to start tracking attendance</p>
                   <button
                     onClick={() => setShowSubjectForm(true)}
@@ -91,12 +91,12 @@ export function AttendanceView() {
                       <div
                         key={subject.id}
                         className={cn(
-                          'bg-white border rounded-lg p-6 hover:shadow-md transition-shadow',
+                          'bg-white dark:bg-gray-800 dark:border-gray-700 border rounded-lg p-6 hover:shadow-md transition-shadow',
                           isLowAttendance ? 'border-red-200 bg-red-50' : 'border-gray-200'
                         )}
                       >
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="font-semibold text-gray-900">{subject.name}</h3>
+                          <h3 className="font-semibold text-gray-900 dark:text-white">{subject.name}</h3>
                           {isLowAttendance && (
                             <AlertTriangle className="w-5 h-5 text-red-500" />
                           )}
@@ -104,7 +104,7 @@ export function AttendanceView() {
 
                         <div className="space-y-3">
                           <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">Attendance</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-300">Attendance</span>
                             <span className={cn(
                               'font-bold text-lg',
                               isLowAttendance ? 'text-red-600' : 'text-green-600'
@@ -123,7 +123,7 @@ export function AttendanceView() {
                             />
                           </div>
 
-                          <div className="text-sm text-gray-600">
+                          <div className="text-sm text-gray-600 dark:text-gray-300">
                             <div className="flex justify-between">
                               <span>Present: {subject.attended_classes}</span>
                               <span>Total: {subject.total_classes}</span>
