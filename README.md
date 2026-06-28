@@ -9,7 +9,7 @@ A modern, full-stack application designed to help students organize their academ
 - **⏱️ Focus Timer (Pomodoro)**: Built-in productivity timer for study sessions and breaks.
 - **📊 Profile & Statistics**: View your completed tasks, focus hours, and export your data as JSON.
 - **🌓 Dark Mode**: Seamlessly switch between light and dark themes.
-- **🔒 Secure Authentication**: Real-time sign-in and sign-up with Email or Google (powered by Supabase).
+- **🔒 Secure Authentication**: Real-time sign-in and sign-up with Email (powered by Supabase).
 
 ## 🏗️ Architecture
 

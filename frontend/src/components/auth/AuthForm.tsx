@@ -75,7 +75,7 @@ export function AuthForm() {
                 input: 'auth-input',
               },
             }}
-            providers={['google']}
+            providers={[]}
             redirectTo={`${window.location.origin}${import.meta.env.BASE_URL}`}
             onlyThirdPartyProviders={false}
           />
