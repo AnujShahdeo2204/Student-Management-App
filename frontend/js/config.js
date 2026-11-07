@@ -1,8 +1,7 @@
 // API Configuration for Student Management App
 const CONFIG = {
-  // Default fallback backend URL
-  // Replace this with your actual deployed Vercel backend URL (e.g., https://your-backend.vercel.app/api)
-  PRODUCTION_API_URL: 'https://your-student-backend.vercel.app/api',
+  // Live Vercel backend URL
+  PRODUCTION_API_URL: 'https://student-management-app-black.vercel.app/api',
 
   getApiBaseUrl() {
     // 1. Check if user configured custom URL in browser localStorage
@@ -33,4 +32,3 @@ const CONFIG = {
     }
   },
 };
-
