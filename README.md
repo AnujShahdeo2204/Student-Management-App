@@ -1,89 +1,124 @@
 # Student Management App 🎓
 
-A modern, full-stack application designed to help students organize their academic and personal lives. Track tasks, manage timetables, maintain focus with a Pomodoro timer, and view detailed statistics—all in a beautiful, responsive dark-mode enabled interface.
+A modern, fast, full-stack application designed to help students organize tasks, class timetables, attendance tracking, and study focus sessions—built with an **easy-to-understand tech stack** and **self-made Email/Password authentication** (zero reliance on Google or third-party auth).
+
+---
 
 ## 🌟 Features
 
-- **✅ Task Management (Todos)**: Organize assignments and tasks by priority, category, and due date.
-- **📅 Interactive Timetable**: Visual weekly schedule with color-coded classes and events.
-- **⏱️ Focus Timer (Pomodoro)**: Built-in productivity timer for study sessions and breaks.
-- **📊 Profile & Statistics**: View your completed tasks, focus hours, and export your data as JSON.
-- **🌓 Dark Mode**: Seamlessly switch between light and dark themes.
-- **🔒 Secure Authentication**: Real-time sign-in and sign-up with Email (powered by Supabase).
-
-## 🏗️ Architecture
-
-This repository uses a monorepo structure:
-- **`frontend/`**: A React application built with Vite, TypeScript, and Tailwind CSS.
-- **`backend/`**: A Node.js Express server configured in TypeScript (ready for custom APIs or AI Chatbot logic).
-- **`database/`**: Contains raw SQL migrations for the Supabase backend.
-
-### Tech Stack
-- **Frontend**: React 18, Vite, Tailwind CSS, Lucide Icons, React Router
-- **Backend**: Node.js, Express, TypeScript
-- **Database / Auth**: [Supabase](https://supabase.com/) (PostgreSQL + GoTrue Auth)
-
-## 🚀 Local Development Setup
-
-### 1. Supabase Setup (Database & Auth)
-This project relies on Supabase for the database and authentication.
-1. Create a free project on [Supabase](https://supabase.com/).
-2. Navigate to **Project Settings -> API** and copy your `Project URL` and `anon public` key.
-3. Open the **SQL Editor** in your Supabase dashboard and run the code from `database/supabase/migrations/all_migrations.sql` to generate your tables and security policies.
-
-### 2. Frontend Setup
-1. Open terminal and go to the frontend directory:
-   ```bash
-   cd frontend
-   npm install
-   ```
-2. Create an environment file:
-   Create a `.env` file in the `frontend` folder and add your Supabase keys:
-   ```env
-   VITE_SUPABASE_URL=your_supabase_url_here
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
-   ```
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
-   *The app will run at `http://localhost:5173`.*
-
-### 3. Backend Setup (Optional)
-1. Open terminal and go to the backend directory:
-   ```bash
-   cd backend
-   npm install
-   ```
-2. Run the Express API server:
-   ```bash
-   npm run dev
-   ```
-   *The API will run at `http://localhost:3000`.*
-
-## 🌐 Live Demo
-The application is live and deployed via GitHub Pages at:
-👉 **[https://AnujShahdeo2204.github.io/Student-Management-App/](https://AnujShahdeo2204.github.io/Student-Management-App/)**
-
-## 🚀 Deploying to GitHub Pages
-
-This project is configured to automatically deploy to GitHub pages.
-
-1. **Push your code to GitHub**:
-   Make sure all your code (including this updated README) is pushed to your GitHub repository.
-2. **Run the deploy command**:
-   Open a terminal in the `frontend` folder and run:
-   ```bash
-   npm run deploy
-   ```
-   *(This will automatically bundle the application along with your `.env` variables and push it to the `gh-pages` branch).*
-3. **Configure GitHub Settings**:
-   - Go to your repository settings on GitHub.
-   - Click on **Pages** in the left sidebar.
-   - Ensure the Source is set to **Deploy from a branch** and the branch is set to `gh-pages`.
-
-## 💡 Notes on "Fallback Mode"
-If you run the frontend *without* a `.env` file, the app has a built-in safety net that boots into a "local mock session." It allows you to test the UI without a live database connection. Once you add real keys, it switches automatically to production mode.
+- **🔒 Self-Made Authentication**: Custom Email & Password sign-up, login, and secure sessions via JWT tokens and bcrypt password hashing.
+- **✅ Task Management (Todos)**: Organize assignments and tasks by priority, category, and due date with instant status updates.
+- **📅 Interactive Weekly Timetable**: Color-coded weekly class schedule with room and time slots.
+- **📊 75% Rule Attendance Tracker**: Track attended and total lectures per subject with smart safe-to-miss and must-attend advice alerts.
+- **⏱️ Focus Timer (Pomodoro)**: 25-minute study intervals, short and long breaks with completion chimes and study session logging.
+- **🤖 Student AI Assistant**: Instant study tips, attendance strategies, and schedule advice.
+- **👤 Profile & Data Export**: Summary statistics of your academic productivity with 1-click JSON backup export.
+- **🌓 Dark Mode**: Built-in dark and light theme toggle with local memory persistence.
 
 ---
-*Built with ❤️ for modern students.*
+
+## 🏗️ Tech Stack
+
+- **Frontend**: **Vanilla HTML5, CSS3, JavaScript (ES6+)**
+  - Zero build step, no Webpack/Vite complexity.
+  - Can be opened directly in the browser or served statically.
+  - Deployable directly to **GitHub Pages**.
+- **Backend**: **Node.js + Express.js**
+  - Formatted for Serverless execution on **Vercel** (`api/index.js` + `vercel.json`).
+  - Passwords hashed using `bcryptjs`.
+  - Sessions secured using `jsonwebtoken` (JWT).
+- **Database**: **PostgreSQL** (e.g. Free [Neon.tech](https://neon.tech) serverless Postgres) with automatic table creation, plus a zero-setup local memory fallback.
+
+---
+
+## 💻 Local Development
+
+### 1. Start the Backend Server
+
+```bash
+cd backend
+npm install
+npm start
+```
+*The server will start at `http://localhost:3000` with the `/api/health` status check.*
+
+### 2. Open the Frontend
+
+Simply open `frontend/index.html` in your web browser (or use VS Code "Live Server").
+The frontend will automatically connect to `http://localhost:3000/api`.
+
+---
+
+## 🚀 Deployment Guide
+
+### A. Deploy Backend to Vercel
+
+1. **Push your code to GitHub**.
+2. Go to [Vercel](https://vercel.com) and click **"Add New Project"**.
+3. Import your GitHub repository.
+4. Set the **Root Directory** to `backend` (or leave as root, as `vercel.json` is configured).
+5. Add Environment Variables in the Vercel Dashboard:
+   - `JWT_SECRET`: Any random secure string (e.g., `super_secret_student_key_2026`).
+   - `DATABASE_URL`: Your free PostgreSQL connection string from [Neon.tech](https://neon.tech) (e.g., `postgresql://user:pass@ep-cool-flower.us-east-2.aws.neon.tech/neondb?sslmode=require`).
+6. Click **Deploy**. Vercel will give you a live HTTPS URL like:
+   `https://your-student-backend.vercel.app`
+
+---
+
+### B. Deploy Frontend to GitHub Pages
+
+1. Go to your GitHub repository on GitHub.com.
+2. Click **Settings** > **Pages** in the left sidebar.
+3. Under **Build and deployment**:
+   - **Source**: Select **Deploy from a branch**.
+   - **Branch**: Select `main` and folder `/docs`.
+   - Click **Save**.
+4. GitHub Pages will build and deploy your site at:
+   `https://<your-username>.github.io/<repo-name>/`
+
+---
+
+### C. Connect Frontend to Live Backend
+
+Once your backend is live on Vercel:
+1. Open your GitHub Pages website.
+2. In the navigation bar, go to the **Profile** tab.
+3. Under **⚙️ Backend Server URL**, paste your Vercel backend URL:
+   `https://your-student-backend.vercel.app/api`
+4. Click **Save URL**. That's it! Your GitHub Pages frontend is now permanently connected to your Vercel backend.
+
+---
+
+## 📁 Repository Structure
+
+```
+├── backend/
+│   ├── api/
+│   │   └── index.js             # Vercel Serverless Function entry point
+│   ├── src/
+│   │   ├── controllers/         # Auth, Todos, Timetable, Attendance, Timer, Chatbot
+│   │   ├── middleware/          # JWT Verification Middleware
+│   │   ├── db.js                # PostgreSQL connection pool & auto-table initialization
+│   │   ├── app.js               # Express application configuration
+│   │   └── index.js             # Local development server entry point
+│   ├── vercel.json              # Vercel routing configuration
+│   └── package.json
+│
+├── frontend/                    # Pure HTML, CSS, JavaScript (No build required!)
+│   ├── css/
+│   │   └── style.css            # Responsive layout & theme variables
+│   ├── js/
+│   │   ├── config.js            # API base URL configuration
+│   │   ├── auth.js              # Self-made Email/Password JWT auth
+│   │   ├── todos.js             # Tasks CRUD & filters
+│   │   ├── timetable.js         # Weekly schedule & day selector
+│   │   ├── attendance.js        # 75% rule tracker & advice
+│   │   ├── timer.js             # Pomodoro focus timer with audio tone
+│   │   ├── chatbot.js           # Student assistant chat stream
+│   │   ├── profile.js           # Statistics & JSON backup export
+│   │   └── app.js               # Main tab coordinator & toasts
+│   └── index.html               # Main application markup
+│
+├── docs/                        # Direct mirror of frontend/ for 1-click GitHub Pages
+└── .github/workflows/deploy.yml # Optional automated GitHub Actions Pages deployment
+```
