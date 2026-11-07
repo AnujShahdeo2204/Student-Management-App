@@ -247,3 +247,4 @@ const Auth = {
     this.renderAuthScreen();
   },
 };
+

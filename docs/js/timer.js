@@ -155,3 +155,4 @@ const Timer = {
     this.updateDisplay();
   },
 };
+
