@@ -1,12 +1,345 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=frontend/index.html">
-  <title>Student Management App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Management App 🎓</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
 </head>
 <body>
-  <p>Redirecting to <a href="frontend/index.html">Student Management App</a>...</p>
+
+  <!-- Toast Notification Hub -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- =========================================================================
+       1. AUTHENTICATION SECTION (Self-made Email & Password Auth)
+       ========================================================================= -->
+  <div id="auth-container" class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">🎓</div>
+        <h1>Student Manager</h1>
+        <p>Organize • Focus • Achieve</p>
+      </div>
+
+      <!-- Sign In vs Register Tabs -->
+      <div class="auth-tabs">
+        <button id="tab-btn-login" class="auth-tab-btn active" type="button">Sign In</button>
+        <button id="tab-btn-register" class="auth-tab-btn" type="button">Create Account</button>
+      </div>
+
+      <!-- Error Alert Box -->
+      <div id="auth-error-alert" class="auth-error hidden"></div>
+
+      <!-- Sign In Form -->
+      <div id="login-section">
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email Address</label>
+            <input type="email" id="login-email" class="form-input" placeholder="student@university.edu" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div id="register-section" class="hidden">
+        <form id="register-form">
+          <div class="form-group">
+            <label for="register-name">Full Name</label>
+            <input type="text" id="register-name" class="form-input" placeholder="Alex Student" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email Address</label>
+            <input type="email" id="register-email" class="form-input" placeholder="student@university.edu" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password (min 6 chars)</label>
+            <input type="password" id="register-password" class="form-input" placeholder="••••••••" required minlength="6" autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label for="register-confirm-password">Confirm Password</label>
+            <input type="password" id="register-confirm-password" class="form-input" placeholder="••••••••" required minlength="6" autocomplete="new-password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       2. MAIN DASHBOARD (Shown when student is logged in)
+       ========================================================================= -->
+  <div id="main-app" class="app-container hidden">
+    <!-- Navbar -->
+    <header class="navbar">
+      <a href="#" class="navbar-brand">
+        <span>🎓</span>
+        <span>Student Manager</span>
+      </a>
+      <div class="navbar-user">
+        <div class="user-pill">
+          <span id="profile-avatar-initial" class="avatar-badge">S</span>
+          <span id="user-display-name">Student</span>
+        </div>
+        <button id="theme-toggle-btn" class="btn-icon" title="Toggle Theme">☀️</button>
+        <button id="btn-logout" class="btn btn-sm btn-outline" title="Log Out">Sign Out</button>
+      </div>
+    </header>
+
+    <!-- Sub Navigation Tabs -->
+    <nav class="subnav">
+      <a href="#todos" class="nav-link active" data-tab="todos">📝 Tasks</a>
+      <a href="#timetable" class="nav-link" data-tab="timetable">📅 Timetable</a>
+      <a href="#attendance" class="nav-link" data-tab="attendance">📊 Attendance</a>
+      <a href="#timer" class="nav-link" data-tab="timer">⏱️ Focus Timer</a>
+      <a href="#chatbot" class="nav-link" data-tab="chatbot">🤖 Study AI</a>
+      <a href="#profile" class="nav-link" data-tab="profile">👤 Profile</a>
+    </nav>
+
+    <!-- Main Views Container -->
+    <main class="main-content">
+
+      <!-- ==================== TAB 1: TODOS / TASKS ==================== -->
+      <section id="view-todos" class="view-panel active">
+        <div class="view-header">
+          <h2>Task Management</h2>
+          <p>Organize assignments, homework, and projects</p>
+        </div>
+
+        <!-- Add Task Bar -->
+        <div class="card-section">
+          <form id="add-todo-form" class="add-todo-grid">
+            <input type="text" id="todo-title-input" class="form-input" placeholder="Add a new assignment or study task..." required>
+            <select id="todo-category-input" class="form-input">
+              <option value="Homework">Homework</option>
+              <option value="Exam Prep">Exam Prep</option>
+              <option value="Project">Project</option>
+              <option value="General" selected>General</option>
+            </select>
+            <select id="todo-priority-input" class="form-input">
+              <option value="low">Low Priority</option>
+              <option value="medium" selected>Medium Priority</option>
+              <option value="high">High Priority</option>
+            </select>
+            <input type="date" id="todo-due-date-input" class="form-input" title="Due Date">
+            <button type="submit" class="btn btn-primary">+ Add Task</button>
+          </form>
+        </div>
+
+        <!-- Filters & Progress -->
+        <div class="todo-filters-bar">
+          <div class="filter-btn-group">
+            <button class="todo-filter-btn active" data-filter="all">All</button>
+            <button class="todo-filter-btn" data-filter="active">Active</button>
+            <button class="todo-filter-btn" data-filter="completed">Completed</button>
+          </div>
+
+          <div class="progress-container">
+            <span id="todos-completed-count" class="text-muted" style="font-size: 0.85rem;">0 done</span>
+            <div class="progress-bar-bg">
+              <div id="todos-progress-fill" class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <span id="todos-total-count" class="text-muted" style="font-size: 0.85rem;">0 tasks</span>
+          </div>
+        </div>
+
+        <!-- Task List -->
+        <div id="todo-list" class="todo-list"></div>
+      </section>
+
+      <!-- ==================== TAB 2: TIMETABLE ==================== -->
+      <section id="view-timetable" class="view-panel">
+        <div class="view-header">
+          <h2>Weekly Timetable</h2>
+          <p>Organize and view your class schedule</p>
+        </div>
+
+        <!-- Day Selector Tabs -->
+        <div id="timetable-day-selector" class="day-selector-bar"></div>
+
+        <!-- Current Day Heading -->
+        <h3 id="timetable-current-day" style="margin-bottom: 1rem; font-size: 1.15rem;">Monday's Classes</h3>
+
+        <!-- Timetable Slots -->
+        <div id="timetable-slots" class="timetable-list"></div>
+
+        <!-- Add Timetable Slot Form -->
+        <div class="card-section">
+          <h4 style="margin-bottom: 1rem;">Add Class / Lecture</h4>
+          <form id="add-timetable-form" class="add-todo-grid">
+            <input type="text" id="timetable-subject" class="form-input" placeholder="Subject (e.g., Data Structures)" required>
+            <select id="timetable-day-select" class="form-input">
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+            </select>
+            <input type="time" id="timetable-start-time" class="form-input" value="09:00" required>
+            <input type="time" id="timetable-end-time" class="form-input" value="10:00" required>
+            <input type="text" id="timetable-room" class="form-input" placeholder="Room / Link (e.g. Lab 3)">
+            <select id="timetable-color" class="form-input">
+              <option value="indigo">Indigo Accent</option>
+              <option value="green">Green Accent</option>
+              <option value="amber">Amber Accent</option>
+              <option value="purple">Purple Accent</option>
+              <option value="rose">Rose Accent</option>
+            </select>
+            <button type="submit" class="btn btn-primary">+ Add Class</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 3: ATTENDANCE TRACKER ==================== -->
+      <section id="view-attendance" class="view-panel">
+        <div class="view-header">
+          <h2>Attendance Tracker</h2>
+          <p>Track class attendance and monitor the 75% rule</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-cards-grid" style="margin-bottom: 1.5rem;">
+          <div class="stat-card">
+            <div id="overall-attendance-avg" class="stat-value">0%</div>
+            <div class="stat-label">Overall Attendance</div>
+          </div>
+          <div class="stat-card">
+            <div id="overall-attendance-summary" class="stat-value" style="font-size: 1.25rem;">0 attended</div>
+            <div class="stat-label">Class Ratio</div>
+          </div>
+        </div>
+
+        <!-- Attendance Subject Cards -->
+        <div id="attendance-list" class="attendance-grid"></div>
+
+        <!-- Add Subject Form -->
+        <div class="card-section">
+          <h4 style="margin-bottom: 1rem;">Add Subject for Attendance</h4>
+          <form id="add-subject-form" class="add-todo-grid">
+            <input type="text" id="attendance-subject-input" class="form-input" placeholder="Subject Name (e.g., Mathematics)" required>
+            <input type="number" id="attendance-attended-input" class="form-input" placeholder="Attended (default: 0)" min="0" value="0">
+            <input type="number" id="attendance-total-input" class="form-input" placeholder="Total held (default: 0)" min="0" value="0">
+            <input type="number" id="attendance-target-input" class="form-input" placeholder="Target %" min="50" max="100" value="75">
+            <button type="submit" class="btn btn-primary">+ Add Subject</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 4: FOCUS TIMER ==================== -->
+      <section id="view-timer" class="view-panel">
+        <div class="view-header" style="text-align: center;">
+          <h2>Focus Timer (Pomodoro)</h2>
+          <p>Boost your productivity with study intervals</p>
+        </div>
+
+        <div class="timer-container">
+          <div class="timer-modes">
+            <button class="timer-mode-btn active" data-mode="pomodoro">Pomodoro (25m)</button>
+            <button class="timer-mode-btn" data-mode="shortBreak">Short Break (5m)</button>
+            <button class="timer-mode-btn" data-mode="longBreak">Long Break (15m)</button>
+          </div>
+
+          <div id="timer-time-display" class="timer-clock">25:00</div>
+
+          <div class="timer-controls">
+            <button id="timer-start-btn" class="btn btn-primary" style="padding: 0.85rem 2rem;">▶ Start</button>
+            <button id="timer-pause-btn" class="btn btn-danger hidden" style="padding: 0.85rem 2rem;">⏸ Pause</button>
+            <button id="timer-reset-btn" class="btn btn-outline" style="padding: 0.85rem 1.5rem;">↺ Reset</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 5: STUDY ASSISTANT (CHATBOT) ==================== -->
+      <section id="view-chatbot" class="view-panel">
+        <div class="view-header">
+          <h2>Student AI Assistant</h2>
+          <p>Ask for study techniques, timetable advice, or attendance calculations</p>
+        </div>
+
+        <div class="chat-container">
+          <div id="chatbot-stream" class="chat-stream"></div>
+
+          <!-- Quick Suggestion Pills -->
+          <div class="chat-suggestions">
+            <button class="chat-suggestion-pill">"How to prepare for upcoming exams?"</button>
+            <button class="chat-suggestion-pill">"How to calculate attendance?"</button>
+            <button class="chat-suggestion-pill">"Tips for maintaining focus with Pomodoro"</button>
+          </div>
+
+          <form id="chat-form" class="chat-form">
+            <input type="text" id="chat-input" class="form-input" placeholder="Ask a question..." required autocomplete="off">
+            <button type="submit" id="chat-send-btn" class="btn btn-primary">Send</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 6: PROFILE & SETTINGS ==================== -->
+      <section id="view-profile" class="view-panel">
+        <div class="view-header">
+          <h2>Student Profile & Settings</h2>
+          <p>View your overall academic stats and configure backend settings</p>
+        </div>
+
+        <!-- Academic Overview -->
+        <div class="stats-cards-grid">
+          <div class="stat-card">
+            <div id="stats-tasks-completed" class="stat-value">0 / 0</div>
+            <div class="stat-label">Tasks Completed</div>
+          </div>
+          <div class="stat-card">
+            <div id="stats-focus-hours" class="stat-value">0 hrs</div>
+            <div class="stat-label">Focus Hours Logged</div>
+          </div>
+          <div class="stat-card">
+            <div id="stats-focus-sessions" class="stat-value">0 sessions</div>
+            <div class="stat-label">Study Sessions</div>
+          </div>
+          <div class="stat-card">
+            <div id="stats-attendance-overall" class="stat-value">0%</div>
+            <div class="stat-label">Overall Attendance</div>
+          </div>
+        </div>
+
+        <!-- Account Info Card -->
+        <div class="card-section">
+          <h3 style="margin-bottom: 1rem;">Student Account</h3>
+          <p style="margin-bottom: 0.5rem;"><strong>Name:</strong> <span id="profile-name">Student</span></p>
+          <p style="margin-bottom: 1.5rem;"><strong>Email:</strong> <span id="profile-email">student@university.edu</span></p>
+          <button id="btn-export-data" class="btn btn-outline">📥 Export My Data as JSON</button>
+        </div>
+
+        <!-- Backend Deployment Configuration -->
+        <div class="card-section">
+          <h3 style="margin-bottom: 0.5rem;">⚙️ Backend Server URL</h3>
+          <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1rem;">
+            When deployed on GitHub Pages, paste your live Vercel backend URL here (e.g., <code>https://your-backend.vercel.app/api</code>).
+          </p>
+          <div style="display: flex; gap: 0.75rem;">
+            <input type="url" id="api-url-input" class="form-input" placeholder="http://localhost:3000/api">
+            <button id="btn-save-api-url" class="btn btn-primary">Save URL</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/todos.js"></script>
+  <script src="js/timetable.js"></script>
+  <script src="js/attendance.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script src="js/profile.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
-
