@@ -1,185 +1,162 @@
-# Student Management App ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â‚¬Å“
+# Student Manager
 
-A modern, full-stack student organizer built with an **easy-to-understand, beginner-friendly tech stack** and **self-made Email/Password authentication** (completely free of Google, Supabase, or third-party auth dependencies).
+Student Manager is a full-stack student organizer with a vanilla HTML/CSS/JavaScript frontend, an Express API, JWT authentication, and PostgreSQL persistence.
 
-Designed to run as a static site on **GitHub Pages** and as a combined static/serverless deployment on **Vercel**.
+Live application: https://student-management-app-black.vercel.app/
 
----
+## Features
 
-## ÃƒÂ°Ã…Â¸Ã…â€™Ã…Â¸ Features
+- Email/password registration and login
+- JWT-protected student sessions
+- Task management with priority, category, due dates, completion, and deletion
+- Weekly timetable with coloured class entries
+- Attendance tracking with 75% rule guidance
+- Pomodoro focus timer and study-session history
+- Study assistant chatbot
+- Profile statistics and JSON export
+- Light/dark theme preference
+- Responsive sage, cream, and olive frontend with gentle tab transitions
+- Local storage for the theme and authentication session
 
-- **ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â„¢ Self-Made Authentication**: Custom Email & Password sign-up, login, and secure sessions via JWT tokens and bcrypt password hashing.
-- **ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Task Management (Todos)**: Organize assignments and tasks by priority, category, and due date with instant status updates and completion progress.
-- **ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¦ Interactive Weekly Timetable**: Color-coded weekly class schedule with room and time slots.
-- **ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  75% Rule Attendance Tracker**: Track attended and total lectures per subject with smart safe-to-miss and must-attend advice alerts.
-- **ÃƒÂ¢Ã‚ÂÃ‚Â±ÃƒÂ¯Ã‚Â¸Ã‚Â Focus Timer (Pomodoro)**: 25-minute study intervals, short and long breaks with completion audio chimes and study session logging.
-- **ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ Student AI Assistant**: Instant study tips, attendance strategies, and schedule advice.
-- **ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¤ Profile & Data Export**: Summary statistics of your academic productivity with 1-click JSON backup export.
-- **ÃƒÂ°Ã…Â¸Ã…â€™Ã¢â‚¬Å“ Dark Mode**: Built-in dark and light theme toggle with local memory persistence.
+## Architecture
 
----
-
-## ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â‚¬â€ÃƒÂ¯Ã‚Â¸Ã‚Â Tech Stack
-
-| Layer | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Frontend** | **Vanilla HTML5, CSS3, JavaScript (ES6+)** | Zero build step, runs immediately in any browser without `npm install` or bundlers. |
-| **Backend** | **Node.js + Express.js** | REST API and serverless handler for **Vercel**. |
-| **Auth** | **JWT (`jsonwebtoken`) + `bcryptjs`** | Self-made token authentication with password hashing (no Google/Supabase). |
-| **Database** | **PostgreSQL (via Neon.tech)** | Serverless cloud PostgreSQL with auto-table initialization and a zero-setup local memory fallback. |
-| **Frontend Hosting** | **GitHub Pages** | Free static hosting via the GitHub Actions workflow. |
-| **Backend Hosting** | **Vercel** | Free global serverless hosting with automatic HTTPS and instant deploys. |
-
----
-
-## ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» Local Development Setup
-
-### 1. Configure the database and authentication
-
-The API uses PostgreSQL in production and creates all required tables automatically
-when it starts. Copy `backend/.env.example` to `backend/.env` and set:
-
-```env
-JWT_SECRET=use-a-random-secret-at-least-32-characters-long
-DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+```text
+frontend/   Browser UI, styles, and feature modules
+backend/    Express API, middleware, and controllers
+database/   PostgreSQL connection, schema initialization, and fallback store
+api/        Vercel serverless entry point
 ```
 
-`DATABASE_URL` is optional for local UI testing; without it, data is stored in
-memory and is lost when the server restarts. For a working deployed app, set both
-variables in the Vercel project settings before deploying.
+### Important files
 
-### 2. Start the Backend API
+| File | Purpose |
+| --- | --- |
+| `frontend/index.html` | Dashboard markup, forms, navigation, and script loading |
+| `frontend/css/style.css` | Responsive layout, themes, cards, animation, and controls |
+| `frontend/js/config.js` | Selects the API URL for local and deployed environments |
+| `frontend/js/app.js` | Initializes modules, navigation, themes, and tab transitions |
+| `frontend/js/auth.js` | Registration, login, JWT session handling, and API requests |
+| `frontend/js/todos.js` | Task CRUD and Home task summary |
+| `frontend/js/timetable.js` | Timetable CRUD and day filtering |
+| `frontend/js/attendance.js` | Attendance subjects, calculations, and actions |
+| `frontend/js/timer.js` | Pomodoro timer and session logging |
+| `frontend/js/chatbot.js` | Study assistant interface |
+| `frontend/js/profile.js` | Profile statistics and data export |
+| `backend/src/app.js` | Express app, CORS, routes, and database startup |
+| `backend/src/index.js` | Local server entry point |
+| `backend/src/middleware/auth.js` | JWT validation middleware |
+| `backend/src/controllers/` | API controller implementations |
+| `database/db.js` | PostgreSQL pool, table creation, and local fallback |
+| `api/index.js` | Exports the Express app for Vercel |
+| `vercel.json` | Routes frontend files and `/api/*` requests |
+| `workflow.md` | Detailed request, database, and deployment workflow |
+
+## Local setup
+
+### Requirements
+
+- Node.js 18 or newer
+- npm
+- PostgreSQL for persistent local data, or no database for temporary local fallback
+
+### Install and configure
 
 ```bash
 npm install
+copy backend\.env.example backend\.env
+```
+
+Edit `backend\.env`:
+
+```env
+JWT_SECRET=replace-with-a-random-secret-at-least-32-characters-long
+DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+```
+
+Never commit `.env` files, passwords, database URLs, or JWT secrets.
+
+### Run the API
+
+```bash
 npm start
 ```
-*The server will start at `http://localhost:3000` with the `/api/health` status check.*
 
-### 3. Open the Frontend
+The local API runs at `http://localhost:3000`.
 
-Use a local static server from the repository root (for example, VS Code Live
-Server) and open `frontend/index.html`. The frontend automatically uses the
-local API on `localhost` and the same-origin API on Vercel. GitHub Pages uses
-the production API URL in `frontend/js/config.js`.
+Health check:
 
----
-
-## ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¡ API Endpoints Reference
-
-All endpoints accept and return JSON. Protected endpoints require a valid JWT authorization header.
-| Method | Endpoint | Access | Description |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/health` | Public | Health status check |
-| `POST` | `/api/auth/register` | Public | Register new student (`name`, `email`, `password`) |
-| `POST` | `/api/auth/login` | Public | Login with `email` and `password` (returns JWT) |
-| `GET` | `/api/auth/me` | Protected | Fetch current logged-in student profile |
-| `GET` | `/api/todos` | Protected | Get all tasks for the logged-in student |
-| `POST` | `/api/todos` | Protected | Create new task (`title`, `category`, `priority`, `due_date`) |
-| `PATCH` | `/api/todos/:id/toggle` | Protected | Toggle task completed state (`completed: true/false`) |
-| `DELETE` | `/api/todos/:id` | Protected | Delete task |
-| `GET` | `/api/timetable` | Protected | Get weekly schedule slots |
-| `POST` | `/api/timetable` | Protected | Add schedule slot (`day`, `subject`, `time_start`, `time_end`, `room`, `color`) |
-| `DELETE` | `/api/timetable/:id` | Protected | Remove schedule slot |
-| `GET` | `/api/attendance` | Protected | Get attendance subjects & stats |
-| `POST` | `/api/attendance` | Protected | Add subject (`subject`, `attended`, `total`, `target_percentage`) |
-| `PATCH` | `/api/attendance/:id/record` | Protected | Record attendance (`action: 'present' \| 'absent' \| 'reset'`) |
-| `DELETE` | `/api/attendance/:id` | Protected | Delete subject |
-| `GET` | `/api/timer/stats` | Protected | Get total focus hours, session history, and counts |
-| `POST` | `/api/timer/session` | Protected | Log completed Pomodoro session (`duration_minutes`, `session_type`) |
-| `POST` | `/api/chatbot` | Public | Study assistant chat endpoint (`message`) |
-
----
-
-## ÃƒÂ°Ã…Â¸Ã¢â‚¬â€Ã¢â‚¬Å¾ÃƒÂ¯Ã‚Â¸Ã‚Â Database Tables
-
-When connected to PostgreSQL, tables are created automatically on boot by
-[`database/db.js`](./database/db.js):
-
-- **`users`**: `id`, `name`, `email`, `password_hash`, `created_at`
-- **`todos`**: `id`, `user_id`, `title`, `category`, `priority`, `due_date`, `completed`, `created_at`
-- **`timetable`**: `id`, `user_id`, `day`, `subject`, `time_start`, `time_end`, `room`, `color`, `created_at`
-- **`attendance`**: `id`, `user_id`, `subject`, `attended`, `total`, `target_percentage`, `created_at`
-- **`timer_sessions`**: `id`, `user_id`, `duration_minutes`, `session_type`, `completed_at`
-
----
-
-## ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ Deployment Guide
-
-### A. Deploy Backend to Vercel (Free)
-
-1. **Push your code to GitHub**:
-   ```bash
-   git push origin main
-   ```
-2. Go to [vercel.com](https://vercel.com) and click **"Add New Project"**.
-3. Import your **`Student-Management-App`** repository.
-4. Keep the **Root Directory** at the repository root. Vercel serves
-   `frontend/` and deploys `api/index.js` as the `/api/*` serverless function.
-5. Add Environment Variables in the Vercel Dashboard:
-   - `JWT_SECRET`: A random secret of at least 32 characters.
-   - `DATABASE_URL`: *(Optional but recommended)* Your free PostgreSQL connection string from [Neon.tech](https://neon.tech). If omitted, the server operates on local fallback.
-6. Click **Deploy**. Vercel will give you a live HTTPS URL like:
-   `https://your-student-app.vercel.app`
-
----
-
-### B. Deploy Frontend to GitHub Pages (Free)
-
-1. Open your repository on GitHub.
-2. Go to **Settings** > **Pages** (in the left sidebar).
-3. Under **Build and deployment**:
-   - **Source**: Select **Deploy from a branch**.
-   - **Branch**: Select `gh-pages` and folder `/ (root)`.
-   - Click **Save**.
-4. GitHub Pages will publish your site at:
-   `https://<your-username>.github.io/Student-Management-App/`
-
----
-
-### C. Connect Frontend to Live Backend
-
-The Vercel frontend uses its same-origin `/api` route. The GitHub Pages frontend
-uses the production API URL in `frontend/js/config.js`.
-
----
-
-## ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â Repository Structure
-
-```
-ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ backend/                    # Express API
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ src/
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ controllers/         # Auth, Todos, Timetable, Attendance, Timer, Chatbot
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ middleware/          # JWT Verification Middleware
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ app.js               # Express application configuration
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ index.js             # Local development server entry point
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ .env.example             # Environment variable template
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
-ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ database/                    # PostgreSQL connection and schema initialization
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ db.js
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
-ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ frontend/                   # Pure HTML, CSS, JavaScript (No build required!)
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ css/
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ style.css            # Responsive layout & theme variables
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ js/
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ config.js            # API base URL configuration
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ auth.js              # Self-made Email/Password JWT auth
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ todos.js             # Tasks CRUD & filters
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ timetable.js         # Weekly schedule & day selector
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ attendance.js        # 75% rule tracker & advice
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ timer.js             # Pomodoro focus timer with audio tone
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ chatbot.js           # Student assistant chat stream
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ profile.js           # Statistics & JSON backup export
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ app.js               # Main tab coordinator & toasts
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ index.html               # Main application markup
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
-ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ api/index.js                # Vercel serverless entry point
-ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ .github/workflows/deploy.yml # GitHub Pages deployment
-ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ package.json                # Root scripts and dependencies
-ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ workflow.md                 # Complete project workflow reference
-ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ vercel.json                 # Static frontend and API rewrites
+```text
+http://localhost:3000/api/health
 ```
 
----
+Serve the `frontend` folder with VS Code Live Server or another static server. When opened on localhost, the frontend automatically uses `http://localhost:3000/api`.
 
-*Built with ÃƒÂ¢Ã‚ÂÃ‚Â¤ÃƒÂ¯Ã‚Â¸Ã‚Â for modern students.*
+Without `DATABASE_URL`, the API uses an in-memory fallback. That fallback is intended only for local testing and is cleared when the server stops.
+
+## API routes
+
+Protected routes require an `Authorization: Bearer <token>` header.
+
+| Method | Route | Access |
+| --- | --- | --- |
+| GET | `/api/health` | Public |
+| POST | `/api/auth/register` | Public |
+| POST | `/api/auth/login` | Public |
+| GET | `/api/auth/me` | Protected |
+| GET, POST | `/api/todos` | Protected |
+| PATCH | `/api/todos/:id/toggle` | Protected |
+| DELETE | `/api/todos/:id` | Protected |
+| GET, POST | `/api/timetable` | Protected |
+| DELETE | `/api/timetable/:id` | Protected |
+| GET, POST | `/api/attendance` | Protected |
+| PATCH | `/api/attendance/:id/record` | Protected |
+| DELETE | `/api/attendance/:id` | Protected |
+| GET | `/api/timer/stats` | Protected |
+| POST | `/api/timer/session` | Protected |
+| POST | `/api/chatbot` | Public |
+
+## Database
+
+`database/db.js` creates these tables automatically:
+
+- `users`
+- `todos`
+- `timetable`
+- `attendance`
+- `timer_sessions`
+
+For production, use a persistent PostgreSQL provider such as Neon and set its connection string as the Vercel `DATABASE_URL` environment variable.
+
+## Deployment
+
+### Vercel
+
+1. Import the GitHub repository into Vercel.
+2. Keep the project root at the repository root.
+3. Add these production environment variables:
+   - `JWT_SECRET`
+   - `DATABASE_URL`
+4. Deploy.
+
+`vercel.json` serves `frontend/` and rewrites `/api/*` to `api/index.js`.
+
+### GitHub Pages
+
+The GitHub Actions workflow in `.github/workflows/deploy.yml` deploys the `frontend` folder to GitHub Pages after pushes to `main`. GitHub Pages uses the production API URL configured in `frontend/js/config.js`.
+
+## Validation
+
+```bash
+node --check backend/src/app.js
+node --check database/db.js
+node --check frontend/js/app.js
+node --check frontend/js/auth.js
+node --check frontend/js/todos.js
+node --check frontend/js/timetable.js
+node --check frontend/js/attendance.js
+node --check frontend/js/timer.js
+node --check frontend/js/chatbot.js
+node --check frontend/js/profile.js
+```
+
+Before a production release, verify health, registration, login, one protected request, and PostgreSQL persistence.
