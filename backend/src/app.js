@@ -26,6 +26,7 @@ app.use(
       if (
         !origin ||
         origin === 'https://anujshahdeo2204.github.io' ||
+        /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin) ||
         /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
       ) {
         return callback(null, true);
