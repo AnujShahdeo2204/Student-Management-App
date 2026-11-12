@@ -1,6 +1,7 @@
 const { Pool } = require('pg');
 
 let pool = null;
+let initializationPromise = null;
 const isPostgresConfigured = Boolean(process.env.DATABASE_URL);
 
 if (isPostgresConfigured) {
@@ -23,6 +24,13 @@ const mockStore = {
 };
 
 async function initDB() {
+  if (initializationPromise) return initializationPromise;
+
+  initializationPromise = initializeDatabase();
+  return initializationPromise;
+}
+
+async function initializeDatabase() {
   if (!pool) {
     console.log('[Database] Running in Local Memory Fallback Mode (No DATABASE_URL provided)');
     return;
@@ -94,6 +102,8 @@ async function initDB() {
 
 // Helper query function that routes either to PG Pool or mockStore
 async function query(text, params = []) {
+  await initDB();
+
   if (pool) {
     return pool.query(text, params);
   }

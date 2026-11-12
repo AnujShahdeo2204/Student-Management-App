@@ -2,9 +2,10 @@
   "name": "student-management-app",
   "version": "1.0.0",
   "private": true,
-  "description": "Student Management App frontend and Vercel API",
+  "description": "Student Management App frontend, backend API, and PostgreSQL database adapter",
   "scripts": {
-    "start": "node backend/src/index.js"
+    "start": "node backend/src/index.js",
+    "dev": "node backend/src/index.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

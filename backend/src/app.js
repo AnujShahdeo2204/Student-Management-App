@@ -1,10 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-const { initDB } = require('./db');
+const { initDB } = require('../../database/db');
 const { requireAuth } = require('./middleware/auth');
 const authController = require('./controllers/authController');
 const todoController = require('./controllers/todoController');
@@ -21,12 +22,17 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: [
-      'https://anujshahdeo2204.github.io',
-      'https://anujshahdeo2204.github.io/Student-Management-App',
-      'http://localhost:5173',
-      'http://localhost:3000'
-    ],
+    origin(origin, callback) {
+      if (
+        !origin ||
+        origin === 'https://anujshahdeo2204.github.io' ||
+        /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(new Error('Origin is not allowed by CORS'));
+    },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -84,4 +90,3 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
-

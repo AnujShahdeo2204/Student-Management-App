@@ -1,4 +1,4 @@
-const { query } = require('../db');
+const { query } = require('../../../database/db');
 
 // GET /api/timer/stats
 async function getTimerStats(req, res) {
@@ -47,4 +47,3 @@ module.exports = {
   getTimerStats,
   recordSession,
 };
-

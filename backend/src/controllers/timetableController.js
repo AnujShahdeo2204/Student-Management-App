@@ -1,4 +1,4 @@
-const { query } = require('../db');
+const { query } = require('../../../database/db');
 
 // GET /api/timetable
 async function getTimetable(req, res) {
@@ -67,4 +67,3 @@ module.exports = {
   createTimetableSlot,
   deleteTimetableSlot,
 };
-

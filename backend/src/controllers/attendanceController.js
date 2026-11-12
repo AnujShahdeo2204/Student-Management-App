@@ -1,4 +1,4 @@
-const { query } = require('../db');
+const { query } = require('../../../database/db');
 
 // GET /api/attendance
 async function getAttendance(req, res) {
@@ -108,4 +108,3 @@ module.exports = {
   recordAttendance,
   deleteSubject,
 };
-

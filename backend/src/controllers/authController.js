@@ -1,11 +1,22 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { query } = require('../db');
+const { query } = require('../../../database/db');
 const { JWT_SECRET } = require('../middleware/auth');
+
+function requireJwtSecret(res) {
+  if (!JWT_SECRET || JWT_SECRET.length < 32) {
+    res.status(503).json({ error: 'Authentication is not configured on the server.' });
+    return false;
+  }
+
+  return true;
+}
 
 // POST /api/auth/register
 async function register(req, res) {
   try {
+    if (!requireJwtSecret(res)) return;
+
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
@@ -59,6 +70,8 @@ async function register(req, res) {
 // POST /api/auth/login
 async function login(req, res) {
   try {
+    if (!requireJwtSecret(res)) return;
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -121,4 +134,3 @@ module.exports = {
   login,
   getMe,
 };
-

@@ -1,4 +1,4 @@
-const { query } = require('../db');
+const { query } = require('../../../database/db');
 
 // GET /api/todos
 async function getTodos(req, res) {
@@ -88,4 +88,3 @@ module.exports = {
   toggleTodo,
   deleteTodo,
 };
-

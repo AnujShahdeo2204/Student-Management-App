@@ -2,11 +2,11 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-if (!JWT_SECRET || JWT_SECRET.length < 32) {
-  throw new Error('JWT_SECRET must be configured with at least 32 characters.');
-}
-
 function requireAuth(req, res, next) {
+  if (!JWT_SECRET || JWT_SECRET.length < 32) {
+    return res.status(503).json({ error: 'Authentication is not configured on the server.' });
+  }
+
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
