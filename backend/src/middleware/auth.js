@@ -1,6 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'student-management-secret-key-2026';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET || JWT_SECRET.length < 32) {
+  throw new Error('JWT_SECRET must be configured with at least 32 characters.');
+}
 
 function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -24,4 +28,3 @@ module.exports = {
   requireAuth,
   JWT_SECRET,
 };
-

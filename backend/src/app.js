@@ -21,9 +21,15 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: '*',
+    origin: [
+      'https://anujshahdeo2204.github.io',
+      'https://anujshahdeo2204.github.io/Student-Management-App',
+      'http://localhost:5173',
+      'http://localhost:3000'
+    ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
   })
 );
 app.use(express.json());

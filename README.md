@@ -2,7 +2,7 @@
 
 A modern, full-stack student organizer built with an **easy-to-understand, beginner-friendly tech stack** and **self-made Email/Password authentication** (completely free of Google, Supabase, or third-party auth dependencies).
 
-Designed to run statically on **GitHub Pages** (frontend) and serverless on **Vercel** (backend API).
+Designed to run as a static site on **GitHub Pages** and as a combined static/serverless deployment on **Vercel**.
 
 ---
 
@@ -27,7 +27,7 @@ Designed to run statically on **GitHub Pages** (frontend) and serverless on **Ve
 | **Backend** | **Node.js + Express.js** | Serverless REST API configured for **Vercel** (`api/index.js` + `vercel.json`). |
 | **Auth** | **JWT (`jsonwebtoken`) + `bcryptjs`** | Self-made token authentication with password hashing (no Google/Supabase). |
 | **Database** | **PostgreSQL (via Neon.tech)** | Serverless cloud PostgreSQL with auto-table initialization and a zero-setup local memory fallback. |
-| **Frontend Hosting** | **GitHub Pages** | Free static hosting via the `/docs` folder or GitHub Actions workflow. |
+| **Frontend Hosting** | **GitHub Pages** | Free static hosting via the GitHub Actions workflow. |
 | **Backend Hosting** | **Vercel** | Free global serverless hosting with automatic HTTPS and instant deploys. |
 
 ---
@@ -45,8 +45,7 @@ npm start
 
 ### 2. Open the Frontend
 
-Simply double-click or open `frontend/index.html` in your browser (or use VS Code "Live Server").
-The frontend automatically detects `localhost` and communicates with `http://localhost:3000/api`.
+Open `frontend/index.html` in a browser or use VS Code "Live Server". The frontend always uses the configured Vercel API; no URL needs to be entered in the UI.
 
 ---
 
@@ -99,12 +98,12 @@ When connected to PostgreSQL, tables are created automatically on boot:
    ```
 2. Go to [vercel.com](https://vercel.com) and click **"Add New Project"**.
 3. Import your **`Student-Management-App`** repository.
-4. Set the **Root Directory** to `backend` (or leave default root, as `vercel.json` is configured).
+4. Keep the **Root Directory** at the repository root. Vercel automatically serves the static frontend and deploys `api/index.js` as the `/api/*` serverless function.
 5. Add Environment Variables in the Vercel Dashboard:
-   - `JWT_SECRET`: Any secret string (e.g., `student_app_secret_2026`).
+   - `JWT_SECRET`: A random secret of at least 32 characters.
    - `DATABASE_URL`: *(Optional but recommended)* Your free PostgreSQL connection string from [Neon.tech](https://neon.tech). If omitted, the server operates on local fallback.
 6. Click **Deploy**. Vercel will give you a live HTTPS URL like:
-   `https://your-student-backend.vercel.app`
+   `https://your-student-app.vercel.app`
 
 ---
 
@@ -114,7 +113,7 @@ When connected to PostgreSQL, tables are created automatically on boot:
 2. Go to **Settings** > **Pages** (in the left sidebar).
 3. Under **Build and deployment**:
    - **Source**: Select **Deploy from a branch**.
-   - **Branch**: Select `main` and folder `/docs`.
+   - **Branch**: Select `gh-pages` and folder `/ (root)`.
    - Click **Save**.
 4. GitHub Pages will publish your site at:
    `https://<your-username>.github.io/Student-Management-App/`
@@ -123,13 +122,9 @@ When connected to PostgreSQL, tables are created automatically on boot:
 
 ### C. Connect Frontend to Live Backend
 
-Once your backend is live on Vercel:
-1. Open your live GitHub Pages website in your browser.
-2. Navigate to the **Profile** tab.
-3. Under **⚙️ Backend Server URL**, paste your Vercel backend URL:
-   `https://your-student-backend.vercel.app/api`
-4. Click **Save URL**.
-*Your GitHub Pages frontend is now permanently connected to your Vercel backend.*
+Both the Vercel frontend and the GitHub Pages frontend are configured to use:
+`https://student-management-app-black.vercel.app/api`
+No manual backend URL configuration is required.
 
 ---
 
@@ -164,7 +159,6 @@ Once your backend is live on Vercel:
 │   │   └── app.js               # Main tab coordinator & toasts
 │   └── index.html               # Main application markup
 │
-├── docs/                        # Direct mirror of frontend/ for 1-click GitHub Pages
 ├── .github/workflows/deploy.yml # Automated GitHub Actions Pages deployment
 ├── index.html                   # Root fallback redirect
 └── vercel.json                  # Root Vercel rewrite configuration
