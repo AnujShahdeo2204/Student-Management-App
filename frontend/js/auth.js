@@ -4,26 +4,42 @@ const Auth = {
   USER_KEY: 'student_user_data',
 
   getToken() {
-    return localStorage.getItem(this.TOKEN_KEY);
+    try {
+      return localStorage.getItem(this.TOKEN_KEY);
+    } catch (error) {
+      console.warn('Authentication session could not be read.', error);
+      return null;
+    }
   },
 
   getUser() {
-    const raw = localStorage.getItem(this.USER_KEY);
+    let raw = null;
     try {
+      raw = localStorage.getItem(this.USER_KEY);
       return raw ? JSON.parse(raw) : null;
-    } catch {
+    } catch (error) {
+      console.warn('User profile could not be read.', error);
       return null;
     }
   },
 
   setSession(token, user) {
-    localStorage.setItem(this.TOKEN_KEY, token);
-    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    try {
+      localStorage.setItem(this.TOKEN_KEY, token);
+      localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    } catch (error) {
+      console.error('Authentication session could not be saved.', error);
+      throw new Error('Unable to save your session in this browser.');
+    }
   },
 
   clearSession() {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.USER_KEY);
+    try {
+      localStorage.removeItem(this.TOKEN_KEY);
+      localStorage.removeItem(this.USER_KEY);
+    } catch (error) {
+      console.warn('Authentication session could not be cleared.', error);
+    }
   },
 
   isAuthenticated() {
