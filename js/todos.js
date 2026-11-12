@@ -15,6 +15,8 @@ const Todos = {
     } catch (err) {
       listEl.innerHTML = `<div class="error-state">Failed to load tasks: ${err.message}</div>`;
     }
+
+    this.renderHomePreview();
   },
 
   async add(title, category, priority, dueDate) {
@@ -97,6 +99,7 @@ const Todos = {
     if (totalCountEl) totalCountEl.textContent = `${total} tasks`;
     if (completedCountEl) completedCountEl.textContent = `${completed} done (${percent}%)`;
     if (progressFill) progressFill.style.width = `${percent}%`;
+    this.renderHomePreview();
 
     if (filtered.length === 0) {
       listEl.innerHTML = `
@@ -142,6 +145,31 @@ const Todos = {
       .join('');
   },
 
+  renderHomePreview() {
+    const preview = document.getElementById('home-task-preview');
+    if (!preview) return;
+
+    const priorityRank = { high: 3, medium: 2, low: 1 };
+    const pending = this.items
+      .filter((item) => !item.completed)
+      .sort((a, b) => (priorityRank[b.priority] || 0) - (priorityRank[a.priority] || 0))
+      .slice(0, 3);
+
+    if (!pending.length) {
+      preview.innerHTML = '<div class="home-task-item"><span class="priority-stars">✦</span><span>All caught up. Nice work!</span><span class="icon-disc">✓</span></div>';
+      return;
+    }
+
+    preview.innerHTML = pending.map((item) => {
+      const stars = '★'.repeat(priorityRank[item.priority] || 1);
+      return `<div class="home-task-item">
+        <span class="priority-stars">${stars}</span>
+        <span>${escapeHtml(item.title)}</span>
+        <span class="icon-disc">↗</span>
+      </div>`;
+    }).join('');
+  },
+
   init() {
     const form = document.getElementById('add-todo-form');
     if (form) {
@@ -178,4 +206,3 @@ const Todos = {
     });
   },
 };
-

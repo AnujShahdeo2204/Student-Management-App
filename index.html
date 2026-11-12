@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Management App 🎓</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
 </head>
 <body>
-
-  <canvas id="three-background" aria-hidden="true"></canvas>
 
   <!-- Toast Notification Hub -->
   <div id="toast-container" class="toast-container"></div>
@@ -96,16 +97,55 @@
 
     <!-- Sub Navigation Tabs -->
     <nav class="subnav">
-      <a href="#todos" class="nav-link active" data-tab="todos">📝 Tasks</a>
+      <a href="#home" class="nav-link active" data-tab="home">⌂ Home</a>
+      <a href="#todos" class="nav-link" data-tab="todos">📝 Tasks</a>
       <a href="#timetable" class="nav-link" data-tab="timetable">📅 Timetable</a>
       <a href="#attendance" class="nav-link" data-tab="attendance">📊 Attendance</a>
-      <a href="#timer" class="nav-link" data-tab="timer">⏱️ Focus Timer</a>
-      <a href="#chatbot" class="nav-link" data-tab="chatbot">🤖 Study AI</a>
+      <a href="#timer" class="nav-link" data-tab="timer">⏱️ Focus</a>
       <a href="#profile" class="nav-link" data-tab="profile">👤 Profile</a>
+      <a href="#chatbot" class="nav-link nav-link-secondary" data-tab="chatbot">🤖 Study AI</a>
     </nav>
 
     <!-- Main Views Container -->
     <main class="main-content">
+
+      <!-- ==================== HOME / OVERVIEW ==================== -->
+      <section id="view-home" class="view-panel home-panel">
+        <div class="home-layout">
+          <div class="home-task-panel tilt-card">
+            <div class="panel-kicker">Your study queue</div>
+            <h2>Small steps,<br><strong>big progress.</strong></h2>
+            <div id="home-task-preview" class="home-task-preview">
+              <div class="home-task-item"><span class="priority-stars">★★★</span><span>Loading your tasks...</span><span class="icon-disc">✓</span></div>
+              <div class="home-task-item"><span class="priority-stars">★★</span><span>Plan your next study block</span><span class="icon-disc">⌁</span></div>
+              <div class="home-task-item"><span class="priority-stars">★</span><span>Keep your momentum going</span><span class="icon-disc">↗</span></div>
+            </div>
+          </div>
+          <div class="home-hero-panel tilt-card">
+            <div class="home-hero-copy">
+              <div class="panel-kicker light">Student Manager / today</div>
+              <h1>What are we<br><em>studying today?</em></h1>
+              <p>Make space for focused work, one thoughtful session at a time.</p>
+              <button class="btn btn-cream home-cta" data-tab-target="todos" type="button">View my tasks <span>↗</span></button>
+            </div>
+            <div class="plate" aria-label="Task progress">
+              <svg class="progress-ring" viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="progress-ring-track" cx="60" cy="60" r="52"></circle>
+                <circle id="home-progress-ring" class="progress-ring-value" cx="60" cy="60" r="52" pathLength="100"></circle>
+              </svg>
+              <div class="plate-label"><strong id="home-progress-value">0%</strong><span>done</span></div>
+              <span class="orbit-icon orbit-one">✦</span><span class="orbit-icon orbit-two">☕</span>
+              <span class="orbit-icon orbit-three">✎</span><span class="orbit-icon orbit-four">◌</span>
+            </div>
+            <div class="home-stat-grid">
+              <div class="home-stat"><strong id="home-pending-stat">0</strong><span>pending</span></div>
+              <div class="home-stat"><strong id="home-attendance-stat">0%</strong><span>attendance</span></div>
+              <div class="home-stat"><strong id="home-classes-stat">0</strong><span>classes today</span></div>
+              <div class="home-stat"><strong id="home-focus-stat">0</strong><span>focus min</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- ==================== TAB 1: TODOS / TASKS ==================== -->
       <section id="view-todos" class="view-panel active">
@@ -331,7 +371,6 @@
   <script src="js/timer.js"></script>
   <script src="js/chatbot.js"></script>
   <script src="js/profile.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

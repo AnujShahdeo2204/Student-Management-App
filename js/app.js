@@ -1,60 +1,7 @@
 // Main Application Orchestrator
 const App = {
-  activeTab: 'todos',
-  threeScene: null,
-
-  initThreeBackground() {
-    const canvas = document.getElementById('three-background');
-    if (!canvas || !window.THREE) return;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.position.z = 8;
-
-    const geometry = new THREE.IcosahedronGeometry(2.8, 1);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x7a8466,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.18,
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(3.2, 0.6, -2);
-    scene.add(mesh);
-
-    const particles = new THREE.BufferGeometry();
-    const positions = new Float32Array(180 * 3);
-    for (let index = 0; index < positions.length; index += 3) {
-      positions[index] = (Math.random() - 0.5) * 14;
-      positions[index + 1] = (Math.random() - 0.5) * 10;
-      positions[index + 2] = (Math.random() - 0.5) * 8;
-    }
-    particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    scene.add(new THREE.Points(
-      particles,
-      new THREE.PointsMaterial({ color: 0xd7c5a6, size: 0.035, transparent: true, opacity: 0.75 }),
-    ));
-
-    const animate = () => {
-      mesh.rotation.x += 0.0015;
-      mesh.rotation.y += 0.0025;
-      renderer.render(scene, camera);
-      requestAnimationFrame(animate);
-    };
-
-    const resize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-
-    window.addEventListener('resize', resize);
-    this.threeScene = { renderer, resize };
-    animate();
-  },
+  activeTab: 'home',
+  tabTransitionId: 0,
 
   // Escape HTML to prevent XSS in dynamic rendering
   escapeHtml(str) {
@@ -91,53 +38,51 @@ const App = {
       return;
     }
 
+    if (this.activeTab === tabName) return;
+
     this.activeTab = tabName;
+    const transitionId = ++this.tabTransitionId;
 
     const links = Array.from(document.querySelectorAll('.nav-link'));
-    const currentIndex = links.findIndex((link) => link.classList.contains('active'));
     const nextIndex = links.findIndex((link) => link.dataset.tab === tabName);
-    const direction = nextIndex >= currentIndex ? 1 : -1;
 
     // Update nav links
     document.querySelectorAll('.nav-link').forEach((link) => {
       link.classList.toggle('active', link.dataset.tab === tabName);
     });
 
-    const currentPanel = document.querySelector('.view-panel.active');
     const nextPanel = document.getElementById(`view-${tabName}`);
+    if (!nextPanel) return;
 
-    // Update view panels with a directional 3D card transition.
+    // Keep exactly one panel visible. This avoids two animated panels
+    // competing for layout space when users switch tabs quickly.
     document.querySelectorAll('.view-panel').forEach((panel) => {
-      if (panel === currentPanel && panel !== nextPanel) {
-        panel.style.setProperty('--tab-direction', direction);
-        panel.classList.add('panel-exit');
-        setTimeout(() => {
-          panel.classList.remove('active', 'panel-exit');
-          panel.style.removeProperty('--tab-direction');
-        }, 420);
-      }
+      panel.classList.toggle('active', panel === nextPanel);
+      panel.classList.remove('panel-enter', 'panel-exit');
     });
-    if (nextPanel) {
-      nextPanel.style.setProperty('--tab-direction', direction);
-      nextPanel.classList.remove('panel-exit');
-      nextPanel.classList.add('active', 'panel-enter');
-      setTimeout(() => {
-        nextPanel.classList.remove('panel-enter');
-        nextPanel.style.removeProperty('--tab-direction');
-      }, 520);
-    }
+    void nextPanel.offsetWidth;
+    nextPanel.classList.add('panel-enter');
+    setTimeout(() => {
+      if (transitionId === this.tabTransitionId) nextPanel.classList.remove('panel-enter');
+    }, 360);
 
     // Trigger specific view updates if needed
     if (tabName === 'todos' && window.Todos) Todos.render();
     if (tabName === 'timetable' && window.Timetable) Timetable.render();
     if (tabName === 'attendance' && window.Attendance) Attendance.render();
     if (tabName === 'profile' && window.Profile) Profile.load();
+    this.updateHomeSummary();
   },
 
   // Dark / Light Theme
   initTheme() {
     const themeToggleBtn = document.getElementById('theme-toggle-btn');
-    const savedTheme = localStorage.getItem('student_theme') || 'dark';
+    let savedTheme = 'light';
+    try {
+      savedTheme = localStorage.getItem('student_theme') || 'light';
+    } catch (error) {
+      console.warn('Theme preference could not be loaded.', error);
+    }
 
     document.documentElement.setAttribute('data-theme', savedTheme);
     this.updateThemeButtonIcon(savedTheme);
@@ -147,7 +92,11 @@ const App = {
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
         const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', nextTheme);
-        localStorage.setItem('student_theme', nextTheme);
+        try {
+          localStorage.setItem('student_theme', nextTheme);
+        } catch (error) {
+          console.warn('Theme preference could not be saved.', error);
+        }
         this.updateThemeButtonIcon(nextTheme);
       });
     }
@@ -161,13 +110,50 @@ const App = {
     }
   },
 
+  updateHomeSummary() {
+    const completedText = document.getElementById('todos-completed-count')?.textContent || '0 done (0%)';
+    const totalText = document.getElementById('todos-total-count')?.textContent || '0 tasks';
+    const attendance = document.getElementById('overall-attendance-avg')?.textContent || '0%';
+    const totalClasses = document.querySelectorAll('#timetable-slots .timetable-card').length;
+    const pending = Math.max(0, Number.parseInt(totalText, 10) - Number.parseInt(completedText, 10));
+    const percentMatch = completedText.match(/\((\d+)%\)/);
+    const percent = percentMatch ? Number(percentMatch[1]) : 0;
+    const setText = (id, value) => {
+      const element = document.getElementById(id);
+      if (element) element.textContent = value;
+    };
+
+    setText('home-pending-stat', Number.isNaN(pending) ? 0 : pending);
+    setText('home-attendance-stat', attendance);
+    setText('home-classes-stat', totalClasses);
+    setText('home-progress-value', `${percent}%`);
+    const ring = document.getElementById('home-progress-ring');
+    if (ring) ring.style.strokeDashoffset = String(100 - percent);
+  },
+
   init() {
     // Make escapeHtml available globally
     window.escapeHtml = this.escapeHtml;
 
     // Theme initialization
     this.initTheme();
-    this.initThreeBackground();
+    document.querySelectorAll('[data-tab-target]').forEach((button) => {
+      button.addEventListener('click', () => this.switchTab(button.dataset.tabTarget));
+    });
+
+    document.querySelectorAll('.tilt-card').forEach((card) => {
+      card.addEventListener('pointermove', (event) => {
+        const bounds = card.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+        const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+        card.style.setProperty('--tilt-x', `${y * -4}deg`);
+        card.style.setProperty('--tilt-y', `${x * 5}deg`);
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.setProperty('--tilt-x', '0deg');
+        card.style.setProperty('--tilt-y', '0deg');
+      });
+    });
 
     // Nav link click events
     document.querySelectorAll('.nav-link').forEach((link) => {
@@ -190,6 +176,7 @@ const App = {
     Timer.init();
     Chatbot.init();
     Profile.init();
+    this.updateHomeSummary();
   },
 };
 
