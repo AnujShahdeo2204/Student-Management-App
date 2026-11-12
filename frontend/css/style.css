@@ -1490,3 +1490,24 @@ body::before { top: 8%; left: -2rem; } body::after { right: -2rem; bottom: 8%; w
   .home-stat-grid { bottom: 1rem; left: 1rem; right: 1rem; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* Normal controls and stable tab layout override the legacy pixel styles above. */
+html { image-rendering: auto; }
+body { letter-spacing: normal; }
+button, input, select, textarea, .card-section, .stat-card, .timer-container,
+.chat-container, .auth-card, .navbar, .subnav, .toast, .auth-tabs, .auth-tab-btn,
+.form-input, .btn, .nav-link, .chat-suggestion-pill { border-radius: 14px !important; }
+.app-container { border-radius: 34px !important; }
+.subnav, .nav-link { border-radius: 999px !important; }
+.home-task-panel, .home-hero-panel { border-radius: 28px !important; }
+button, .btn, .nav-link, .auth-tab-btn { font-family: var(--font-family); text-transform: none; }
+button, .btn { border-width: 1px; box-shadow: none; }
+button:active, .btn:active { transform: translateY(0); box-shadow: none; }
+.form-input, select, textarea { border-width: 1px !important; box-shadow: none; }
+.view-panel { display: none; transform: none; }
+.view-panel.active { display: block; animation: gentle-view-in .36s ease both; }
+.panel-enter, .panel-exit { animation: none; }
+@keyframes gentle-view-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

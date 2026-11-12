@@ -1,6 +1,7 @@
 // Main Application Orchestrator
 const App = {
   activeTab: 'home',
+  tabTransitionId: 0,
 
   // Escape HTML to prevent XSS in dynamic rendering
   escapeHtml(str) {
@@ -37,41 +38,33 @@ const App = {
       return;
     }
 
+    if (this.activeTab === tabName) return;
+
     this.activeTab = tabName;
+    const transitionId = ++this.tabTransitionId;
 
     const links = Array.from(document.querySelectorAll('.nav-link'));
-    const currentIndex = links.findIndex((link) => link.classList.contains('active'));
     const nextIndex = links.findIndex((link) => link.dataset.tab === tabName);
-    const direction = nextIndex >= currentIndex ? 1 : -1;
 
     // Update nav links
     document.querySelectorAll('.nav-link').forEach((link) => {
       link.classList.toggle('active', link.dataset.tab === tabName);
     });
 
-    const currentPanel = document.querySelector('.view-panel.active');
     const nextPanel = document.getElementById(`view-${tabName}`);
+    if (!nextPanel) return;
 
-    // Update view panels with a directional 3D card transition.
+    // Keep exactly one panel visible. This avoids two animated panels
+    // competing for layout space when users switch tabs quickly.
     document.querySelectorAll('.view-panel').forEach((panel) => {
-      if (panel === currentPanel && panel !== nextPanel) {
-        panel.style.setProperty('--tab-direction', direction);
-        panel.classList.add('panel-exit');
-        setTimeout(() => {
-          panel.classList.remove('active', 'panel-exit');
-          panel.style.removeProperty('--tab-direction');
-        }, 420);
-      }
+      panel.classList.toggle('active', panel === nextPanel);
+      panel.classList.remove('panel-enter', 'panel-exit');
     });
-    if (nextPanel) {
-      nextPanel.style.setProperty('--tab-direction', direction);
-      nextPanel.classList.remove('panel-exit');
-      nextPanel.classList.add('active', 'panel-enter');
-      setTimeout(() => {
-        nextPanel.classList.remove('panel-enter');
-        nextPanel.style.removeProperty('--tab-direction');
-      }, 520);
-    }
+    void nextPanel.offsetWidth;
+    nextPanel.classList.add('panel-enter');
+    setTimeout(() => {
+      if (transitionId === this.tabTransitionId) nextPanel.classList.remove('panel-enter');
+    }, 360);
 
     // Trigger specific view updates if needed
     if (tabName === 'todos' && window.Todos) Todos.render();
