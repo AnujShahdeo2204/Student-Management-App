@@ -15,12 +15,6 @@ const Profile = {
       avatarEl.textContent = (user.name || user.email || 'S').charAt(0).toUpperCase();
     }
 
-    // Populate current API backend URL in settings input
-    const apiUrlInput = document.getElementById('api-url-input');
-    if (apiUrlInput) {
-      apiUrlInput.value = CONFIG.getApiBaseUrl();
-    }
-
     // Fetch Timer Stats
     try {
       const timerData = await Auth.apiRequest('/timer/stats');
@@ -94,26 +88,6 @@ const Profile = {
   },
 
   init() {
-    // Save custom backend API URL
-    const saveApiBtn = document.getElementById('btn-save-api-url');
-    if (saveApiBtn) {
-      saveApiBtn.addEventListener('click', () => {
-        const input = document.getElementById('api-url-input');
-        if (input) {
-          const newUrl = input.value.trim();
-          CONFIG.setApiBaseUrl(newUrl);
-          App.showToast('Backend API URL updated!', 'success');
-          // Reload dashboard with new backend
-          if (Auth.isAuthenticated()) {
-            Todos.load();
-            Timetable.load();
-            Attendance.load();
-            Profile.load();
-          }
-        }
-      });
-    }
-
     // Export button
     const exportBtn = document.getElementById('btn-export-data');
     if (exportBtn) {
@@ -121,4 +95,3 @@ const Profile = {
     }
   },
 };
-

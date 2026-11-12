@@ -32,6 +32,11 @@ const App = {
 
   // Tab navigation
   switchTab(tabName) {
+    if (Timer.isRunning && tabName !== 'timer') {
+      this.showToast('Focus mode is active. Pause the timer to switch tabs.', 'warning');
+      return;
+    }
+
     this.activeTab = tabName;
 
     // Update nav links
@@ -92,6 +97,10 @@ const App = {
         const tab = link.dataset.tab;
         if (tab) this.switchTab(tab);
       });
+
+      document.addEventListener('visibilitychange', () => {
+        if (Timer.isRunning) Timer.syncWithClock();
+      });
     });
 
     // Initialize modules
@@ -109,4 +118,3 @@ const App = {
 document.addEventListener('DOMContentLoaded', () => {
   App.init();
 });
-

@@ -30,7 +30,7 @@ const Auth = {
     return Boolean(this.getToken());
   },
 
-  // Helper fetch wrapper that automatically attaches the Bearer token
+  // Helper fetch wrapper that automatically attaches the access token.
   async apiRequest(endpoint, options = {}) {
     const baseUrl = CONFIG.getApiBaseUrl();
     const url = `${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
@@ -42,9 +42,8 @@ const Auth = {
 
     const token = this.getToken();
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers.Authorization = "Bearer " + token;
     }
-
     try {
       const response = await fetch(url, {
         ...options,
@@ -73,17 +72,10 @@ const Auth = {
 
   // Register new student account
   async register(name, email, password) {
-    const baseUrl = CONFIG.getApiBaseUrl();
-    const response = await fetch(`${baseUrl}/auth/register`, {
+    const data = await this.apiRequest('/auth/register', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password }),
     });
-
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || 'Failed to create account.');
-    }
 
     this.setSession(data.token, data.user);
     return data;
@@ -91,17 +83,10 @@ const Auth = {
 
   // Log in student with email and password
   async login(email, password) {
-    const baseUrl = CONFIG.getApiBaseUrl();
-    const response = await fetch(`${baseUrl}/auth/login`, {
+    const data = await this.apiRequest('/auth/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
-
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || 'Invalid email or password.');
-    }
 
     this.setSession(data.token, data.user);
     return data;
@@ -247,4 +232,3 @@ const Auth = {
     this.renderAuthScreen();
   },
 };
-

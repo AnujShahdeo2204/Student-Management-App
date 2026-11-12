@@ -4,6 +4,7 @@ const Timer = {
   timeLeft: 25 * 60,
   intervalId: null,
   isRunning: false,
+  endTime: null,
   currentMode: 'pomodoro', // 'pomodoro' | 'shortBreak' | 'longBreak'
 
   modes: {
@@ -13,6 +14,8 @@ const Timer = {
   },
 
   setMode(mode) {
+    if (this.isRunning) return;
+
     this.pause();
     this.currentMode = mode;
     this.duration = this.modes[mode] || 25 * 60;
@@ -29,20 +32,22 @@ const Timer = {
     if (this.isRunning) return;
 
     this.isRunning = true;
+    this.endTime = Date.now() + this.timeLeft * 1000;
     this.updateControls();
 
     this.intervalId = setInterval(() => {
-      this.timeLeft -= 1;
-      this.updateDisplay();
-
+      this.syncWithClock();
       if (this.timeLeft <= 0) {
         this.completeSession();
       }
+      this.updateDisplay();
     }, 1000);
   },
 
   pause() {
+    this.syncWithClock();
     this.isRunning = false;
+    this.endTime = null;
     clearInterval(this.intervalId);
     this.intervalId = null;
     this.updateControls();
@@ -52,6 +57,11 @@ const Timer = {
     this.pause();
     this.timeLeft = this.duration;
     this.updateDisplay();
+  },
+
+  syncWithClock() {
+    if (!this.isRunning || !this.endTime) return;
+    this.timeLeft = Math.max(0, Math.ceil((this.endTime - Date.now()) / 1000));
   },
 
   updateDisplay() {
@@ -85,6 +95,8 @@ const Timer = {
         pauseBtn.classList.add('hidden');
       }
     }
+
+    document.body.classList.toggle('focus-mode', this.isRunning);
   },
 
   playBeep() {
@@ -155,4 +167,3 @@ const Timer = {
     this.updateDisplay();
   },
 };
-
